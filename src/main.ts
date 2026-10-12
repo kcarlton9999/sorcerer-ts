@@ -207,6 +207,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <h1>The Sorcerer Board</h1>
         <p class="subtitle">The complete 23-column map, rendered from its canonical hex data.</p>
         <a class="chart-link" href="/color-value-chart.html">Open the Color Value Chart</a>
+        <a class="chart-link" href="/combat-test.html">Open the Combat Test Bench</a>
       </div>
       <div class="phase-card">
         <span>Board source</span>

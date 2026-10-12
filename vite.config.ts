@@ -6,6 +6,7 @@ export default defineConfig({
       input: {
         main: "index.html",
         colorValueChart: "color-value-chart.html",
+        combatTest: "combat-test.html",
       },
     },
   },

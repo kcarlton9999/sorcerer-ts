@@ -1,0 +1,96 @@
+{
+  "combatLineByValue": {
+    "1": "best",
+    "2": "good",
+    "3": "inferior",
+    "4": "poor",
+    "5": "worst",
+    "6": "neutral"
+  },
+  "colorValueChart": {
+    "blue": {
+      "blue": 6,
+      "green": 1,
+      "yellow": 2,
+      "orange": 3,
+      "red": 4,
+      "purple": 5
+    },
+    "green": {
+      "green": 6,
+      "yellow": 1,
+      "orange": 2,
+      "red": 3,
+      "purple": 4,
+      "blue": 5
+    },
+    "yellow": {
+      "yellow": 6,
+      "orange": 1,
+      "red": 2,
+      "purple": 3,
+      "blue": 4,
+      "green": 5
+    },
+    "orange": {
+      "orange": 6,
+      "red": 1,
+      "purple": 2,
+      "blue": 3,
+      "green": 4,
+      "yellow": 5
+    },
+    "red": {
+      "red": 6,
+      "purple": 1,
+      "blue": 2,
+      "green": 3,
+      "yellow": 4,
+      "orange": 5
+    },
+    "purple": {
+      "purple": 6,
+      "blue": 1,
+      "green": 2,
+      "yellow": 3,
+      "orange": 4,
+      "red": 5
+    }
+  },
+  "combatLines": {
+    "best": {
+      "minDifferential": -8,
+      "maxDifferential": 10
+    },
+    "good": {
+      "minDifferential": -7,
+      "maxDifferential": 11
+    },
+    "neutral": {
+      "minDifferential": -5,
+      "maxDifferential": 13
+    },
+    "inferior": {
+      "minDifferential": -4,
+      "maxDifferential": 14
+    },
+    "poor": {
+      "minDifferential": -3,
+      "maxDifferential": 15
+    },
+    "worst": {
+      "minDifferential": -2,
+      "maxDifferential": 16
+    }
+  },
+  "noEffect": -1,
+  "pin": 0,
+  "resultsByDie": {
+    "1": [-1, 0, 0, 0, 1, 1, 1, 2, 2, 3, 4, 5, 5, 5, 6, 6, 6, 6, 6],
+    "2": [-1, -1, 0, 0, 0, 0, 1, 1, 2, 3, 4, 4, 4, 5, 5, 6, 6, 6, 6],
+    "3": [-1, -1, -1, 0, 0, 0, 1, 1, 1, 2, 3, 4, 4, 4, 4, 5, 6, 6, 6],
+    "4": [-1, -1, -1, -1, -1, 0, 0, 1, 1, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6],
+    "5": [-1, -1, -1, -1, -1, -1, 0, 0, 1, 2, 3, 3, 3, 3, 4, 4, 5, 5, 6],
+    "6": [-1, -1, -1, -1, -1, -1, -1, 0, 1, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5]
+  }
+}

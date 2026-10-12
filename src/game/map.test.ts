@@ -39,6 +39,10 @@ describe("canonical Sorcerer board data and geometry", () => {
     const city = boardData.cells.find((cell) => cell.isCity);
     expect(city).toBeDefined();
     expect(city?.name).toBeTruthy();
+    expect(boardData.cells.find((cell) => cell.id === "1810")).toMatchObject({
+      name: "Gydrittakanna",
+      isCity: false,
+    });
     expect(DIRECTIONS).toHaveLength(6);
     expect(Object.keys(city?.terrain ?? {})).toHaveLength(6);
     expect(

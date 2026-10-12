@@ -144,7 +144,7 @@ function renderCell(cell: MapCell): string {
   return `<g class="hex hex--${cell.color}" data-id="${cell.id}" tabindex="0" role="button" aria-label="${escapeHtml(label)}">
     <polygon points="${svgPoints(vertices)}" />
     <text x="${center.x}" y="${center.y + 3}">${cell.id}</text>
-    ${cell.isCity ? `<circle class="city-marker" cx="${center.x}" cy="${center.y + 11}" r="2.5"><title>${escapeHtml(cell.name?.trim() ?? "")}</title></circle>` : ""}
+    ${cell.isCity || cell.name?.trim() ? `<circle class="hex-name-marker${cell.isCity ? " city-marker" : ""}" cx="${center.x}" cy="${center.y + 11}" r="${cell.isCity ? 3.5 : 2.5}"><title>${escapeHtml(cell.name?.trim() ?? "")}</title></circle>` : ""}
   </g>`;
 }
 
@@ -234,6 +234,12 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
           <button type="button" data-pan="up" aria-label="Scroll board up">↑</button>
           <button type="button" data-pan="down" aria-label="Scroll board down">↓</button>
           <button type="button" data-pan="right" aria-label="Scroll board right">→</button>
+          <span class="control-divider" aria-hidden="true"></span>
+          <span>Map scale</span>
+          <button type="button" data-zoom="out" aria-label="Zoom map out">−</button>
+          <output class="map-scale" aria-live="polite">100%</output>
+          <button type="button" data-zoom="in" aria-label="Zoom map in">+</button>
+          <button type="button" data-zoom="reset">Reset</button>
         </div>
       </div>
       <aside class="legend-card">
@@ -280,6 +286,39 @@ if (!boardWrap || !cityTooltip || !selectionTitle || !selectionDetail) {
 }
 const boardViewport = boardWrap;
 const cityTooltipElement = cityTooltip;
+const boardSvg = boardViewport.querySelector<SVGSVGElement>(".board");
+const mapScaleOutput = document.querySelector<HTMLOutputElement>(".map-scale");
+if (!boardSvg || !mapScaleOutput) {
+  throw new Error("Board scale controls are missing from the page");
+}
+const boardSvgElement = boardSvg;
+const mapScaleLabel = mapScaleOutput;
+let mapScale = 100;
+const baseBoardWidth = 1000;
+
+function updateMapScale(): void {
+  boardSvgElement.style.width = `${baseBoardWidth * (mapScale / 100)}px`;
+  mapScaleLabel.value = `${mapScale}%`;
+  mapScaleLabel.textContent = `${mapScale}%`;
+}
+
+document
+  .querySelectorAll<HTMLButtonElement>("[data-zoom]")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      if (button.dataset.zoom === "reset") {
+        mapScale = 100;
+      } else {
+        mapScale = Math.max(
+          50,
+          Math.min(200, mapScale + (button.dataset.zoom === "in" ? 25 : -25)),
+        );
+      }
+      updateMapScale();
+    });
+  });
+updateMapScale();
+
 const boardPanControls = document.querySelector<HTMLDivElement>(
   ".board-pan-controls",
 );
@@ -311,15 +350,15 @@ boardPanControls
     });
   });
 
-let activeCityMarker: SVGCircleElement | null = null;
+let activeNameMarker: SVGCircleElement | null = null;
 
-function positionCityTooltip(): void {
-  if (!activeCityMarker) {
+function positionNameTooltip(): void {
+  if (!activeNameMarker) {
     return;
   }
 
   const boardBounds = boardViewport.getBoundingClientRect();
-  const markerBounds = activeCityMarker.getBoundingClientRect();
+  const markerBounds = activeNameMarker.getBoundingClientRect();
   const visibleLeft = Math.max(boardBounds.left, 8);
   const visibleRight = Math.min(boardBounds.right, window.innerWidth - 8);
   const visibleTop = Math.max(boardBounds.top, 8);
@@ -376,27 +415,27 @@ function positionCityTooltip(): void {
   cityTooltipElement.style.top = `${top}px`;
 }
 
-function showCityTooltip(marker: SVGCircleElement): void {
-  const name = marker.dataset.cityName;
+function showNameTooltip(marker: SVGCircleElement): void {
+  const name = marker.dataset.hexName;
   if (!name) {
     return;
   }
 
-  activeCityMarker = marker;
+  activeNameMarker = marker;
   cityTooltipElement.textContent = name;
-  positionCityTooltip();
+  positionNameTooltip();
 }
 
-function hideCityTooltip(marker?: SVGCircleElement): void {
-  if (marker && activeCityMarker !== marker) {
+function hideNameTooltip(marker?: SVGCircleElement): void {
+  if (marker && activeNameMarker !== marker) {
     return;
   }
-  activeCityMarker = null;
+  activeNameMarker = null;
   cityTooltipElement.hidden = true;
 }
 
-boardViewport.addEventListener("scroll", positionCityTooltip);
-window.addEventListener("resize", positionCityTooltip);
+boardViewport.addEventListener("scroll", positionNameTooltip);
+window.addEventListener("resize", positionNameTooltip);
 
 document.querySelectorAll<SVGGElement>(".hex").forEach((hex) => {
   const selectHex = () => {
@@ -449,22 +488,22 @@ document.querySelectorAll<SVGGElement>(".hex").forEach((hex) => {
     }
   });
 
-  const cityMarker = hex.querySelector<SVGCircleElement>(".city-marker");
-  if (cityMarker) {
-    const city = cellsById.get(hex.dataset.id ?? "");
-    const cityName = city?.name?.trim();
-    if (!cityName) {
-      throw new Error(`City hex ${hex.dataset.id} has no city name`);
+  const nameMarker = hex.querySelector<SVGCircleElement>(".hex-name-marker");
+  if (nameMarker) {
+    const namedCell = cellsById.get(hex.dataset.id ?? "");
+    const hexName = namedCell?.name?.trim();
+    if (!hexName) {
+      throw new Error(`Named hex ${hex.dataset.id} has no name`);
     }
 
-    cityMarker.dataset.cityName = cityName;
-    cityMarker.addEventListener("pointerenter", () =>
-      showCityTooltip(cityMarker),
+    nameMarker.dataset.hexName = hexName;
+    nameMarker.addEventListener("pointerenter", () =>
+      showNameTooltip(nameMarker),
     );
-    cityMarker.addEventListener("pointerleave", () =>
-      hideCityTooltip(cityMarker),
+    nameMarker.addEventListener("pointerleave", () =>
+      hideNameTooltip(nameMarker),
     );
-    hex.addEventListener("focus", () => showCityTooltip(cityMarker));
-    hex.addEventListener("blur", () => hideCityTooltip(cityMarker));
+    hex.addEventListener("focus", () => showNameTooltip(nameMarker));
+    hex.addEventListener("blur", () => hideNameTooltip(nameMarker));
   }
 });

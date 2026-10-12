@@ -188,14 +188,14 @@ h2 {
 
 .board {
   display: block;
-  width: 100%;
-  min-width: 1000px;
+  width: 1000px;
   height: auto;
   margin: 0 auto;
 }
 
 .board-pan-controls {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -209,9 +209,25 @@ h2 {
   margin-right: 4px;
 }
 
+.board-pan-controls .control-divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 6px;
+  background: var(--line);
+}
+
+.map-scale {
+  min-width: 42px;
+  color: #fff;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
 .board-pan-controls button {
-  width: 36px;
+  min-width: 36px;
   height: 32px;
+  padding: 0 8px;
   border: 1px solid var(--line);
   border-radius: 6px;
   color: #fff;
@@ -288,10 +304,14 @@ h2 {
   outline: none;
 }
 
-.city-marker {
-  fill: #fff4b8;
+.hex-name-marker {
+  fill: #fff;
   stroke: #302715;
   stroke-width: 1;
+}
+
+.city-marker {
+  stroke-width: 1.1;
   cursor: help;
   pointer-events: auto;
 }
@@ -325,8 +345,8 @@ h2 {
 }
 
 .terrain-mark--river {
-  stroke: #56c9f2;
-  stroke-width: 2.4;
+  stroke: #35a8d1;
+  stroke-width: 4;
 }
 
 .terrain-mark--mountain {
@@ -337,6 +357,7 @@ h2 {
 .legend-card {
   position: sticky;
   top: 16px;
+  width: 290px;
   padding: 22px;
   border-radius: 12px;
 }
@@ -421,7 +442,7 @@ h2 {
   position: absolute;
   top: 6px;
   width: 18px;
-  border-top: 3px solid #56c9f2;
+  border-top: 5px solid #35a8d1;
   content: "";
   transform: rotate(-12deg);
 }

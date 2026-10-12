@@ -1,0 +1,9 @@
+# Color Value Chart
+
+## Reading the Chart
+
+The six “arms” of differently colored hexes [each hex of which contains a differently colored square] show the ColorValue number of that color magical unit [represented by the square] when present in that color hex. For example, the ColorValue of a Green magical unit when in a Blue hex is “1.” This number indicates three things in different instances:
+
+1. It is the number of Movement Points such a magical unit will have to expend in order to exit that color hex [unassisted by a same-color Sorcerer] when that hex is the first hex exited in the Movement and Conjuration Phase.
+2. It is the die roll range for attrition purposes when attrition is called for in that color hex when the magical unit is not accompanied by a same-color Sorcerer. An attrition die roll equal to, or less than the number shown indicates that that unit loses one step.
+3. It is the Color Augmentation of a force containing that color magical unit in that color hex.

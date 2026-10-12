@@ -1,0 +1,34 @@
+[
+  {
+    "id": "azure-sorcerer",
+    "name": "Azure Sorcerer",
+    "owner": "player",
+    "q": 1,
+    "r": 2,
+    "strength": 6
+  },
+  {
+    "id": "green-guard",
+    "name": "Green Guard",
+    "owner": "player",
+    "q": 2,
+    "r": 2,
+    "strength": 4
+  },
+  {
+    "id": "red-sorcerer",
+    "name": "Red Sorcerer",
+    "owner": "enemy",
+    "q": 6,
+    "r": 4,
+    "strength": 6
+  },
+  {
+    "id": "fire-troll",
+    "name": "Fire Troll",
+    "owner": "enemy",
+    "q": 5,
+    "r": 4,
+    "strength": 5
+  }
+]

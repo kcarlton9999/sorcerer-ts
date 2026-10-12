@@ -1,0 +1,129 @@
+/* ---------------------------------------------------------
+   FONT IMPORTS
+   (You can move these to the top of your stylesheet)
+--------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Crimson+Pro:wght@600;700&display=swap');
+
+
+/* ---------------------------------------------------------
+   BODY TEXT
+--------------------------------------------------------- */
+body {
+    font-family: "Lora", serif;
+    font-size: 1.05rem;          /* Slightly larger for readability */
+    line-height: 1.55;           /* Comfortable reading rhythm */
+    color: #222;                 /* Softer than pure black */
+    max-width: 900px;            /* Keeps long lines readable */
+    margin: 0 auto;              /* Centers content */
+}
+
+
+/* ---------------------------------------------------------
+   HEADINGS (Markdown #, ##, ###, etc.)
+   Using Crimson Pro for a classic rulebook feel
+--------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Crimson Pro", serif;
+    font-weight: 700;
+    margin-top: 1.8em;
+    margin-bottom: 0.4em;
+    line-height: 1.25;
+    color: #111;
+}
+
+/* H1 — Page titles */
+h1 {
+    font-size: 2.0rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.3em;
+}
+
+/* H2 — Major sections */
+h2 {
+    font-size: 1.6rem;
+    margin-top: 1.6em;
+}
+
+/* H3 — Subsections */
+h3 {
+    font-size: 1.35rem;
+}
+
+/* H4 — Smaller subsections (your ####) */
+h4 {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+/* H5 — Minor headings */
+h5 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* H6 — Tiny headings */
+h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #444;
+}
+
+
+/* ---------------------------------------------------------
+   PARAGRAPHS & LISTS
+--------------------------------------------------------- */
+p {
+    margin: 0.8em 0;
+}
+
+ul, ol {
+    margin: 0.6em 0 0.6em 1.4em;
+    line-height: 1.45;
+}
+
+
+/* ---------------------------------------------------------
+   CODE BLOCKS & INLINE CODE
+--------------------------------------------------------- */
+code, pre {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.95rem;
+}
+
+pre {
+    padding: 0.8em;
+    background: #f6f6f6;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+
+/* ---------------------------------------------------------
+   TABLES
+--------------------------------------------------------- */
+table {
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.5em 0.7em;
+}
+
+th {
+    background: #f0f0f0;
+    font-weight: 600;
+}
+
+
+/* ---------------------------------------------------------
+   IMAGES
+--------------------------------------------------------- */
+img {
+    max-width: 100%;
+    display: block;
+    margin: 1em auto;
+}

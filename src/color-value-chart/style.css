@@ -1,0 +1,81 @@
+:root {
+  color: #eee;
+  background: #000;
+  font-family: system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  padding: 24px;
+}
+
+.chart-page {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.chart-header {
+  margin-bottom: 16px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #bda2ff;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 40px);
+}
+
+.chart {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#text-space {
+  margin-top: 16px;
+  padding: 16px 0 32px;
+  border-top: 1px solid #333;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#text-space h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+#text-space p {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 16px;
+  }
+}

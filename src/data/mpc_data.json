@@ -1,0 +1,171 @@
+[
+    {
+        "unit": "Sorcerer",
+        "cost": [
+            {
+                "description": "Exit any hex by normal movement",
+                "value": 1,
+                "valueType": "base"
+            },
+            {
+                "description": "Cross river hexside by normal movement",
+                "value": 1,
+                "valueType": "additive"
+            },
+            {
+                "description": "Cross mountain hexside by normal movement",
+                "value": 2,
+                "valueType": "additive"
+            },
+            {
+                "description": "Exit any hex occupied by Enemy unit(s)",
+                "value": 2,
+                "valueType": "additive"
+            },
+            {
+                "description": "Teleport (alone) from hex of power to hex of power",
+                "valueType": "base"
+            },
+            {
+                "description": "Teleport with one human infantry unit",
+                "value": 5,
+                "valueType": "base"
+            },
+            {
+                "description": "Undeplete self",
+                "value": 3,
+                "valueType": "base"
+            },
+            {
+                "description": "Remove PIN Marker from hex",
+                "value": 3,
+                "valueType": "base"
+            },
+            {
+                "description": "Undeplete human infantry",
+                "value": 2,
+                "valueType": "base"
+            },
+            {
+                "description": "Undeplete same-color magical unit",
+                "value": 3,
+                "valueType": "base"
+            },
+            {
+                "description": "Fling Magic Bolt from hex of power to hex of power or dominance",
+                "value": 5,
+                "valueType": "base"
+            },
+            {
+                "description": "Conjure vortex",
+                "value": 5,
+                "valueType": "base"
+            },
+            {
+                "description": "Destory vortex",
+                "value": 5,
+                "valueType": "base"
+            },
+            {
+                "description": "Conjure air dragon in same-color hex or White hex",
+                "value": 3,
+                "valueType": "base"
+            },
+            {
+                "description": "Conjure demonic infantry in same-color hex or White hex",
+                "value": 5,
+                "valueType": "base"
+            },
+            {
+                "description": "Conjure troll in same-color hex or White hex",
+                "value": 7,
+                "valueType": "base"
+            },
+            {
+                "description": "Convert White hex to color hex",
+                "value": 15,
+                "valueType": "base"
+            },
+            {
+                "description": "Place one demonic infantry unit on garrison on fortress",
+                "value": 15,
+                "valueType": "base"
+            }
+        ]
+    },
+    {
+        "unit": "HumanInfantry",
+        "cost": [
+            {
+                "description": "Exit any hex by  normal movement",
+                "value": 1,
+                "valueType": "base"
+            },
+            {
+                "description": "Exit any Enemy occupied hex",
+                "value": 2,
+                "valueType": "additive"
+            },
+            {
+                "description": "Exit hex by teleportation (with Sorcerer)",
+                "value": 1,
+                "valueType": "base"
+            },
+            {
+                "description": "Cross river hexside",
+                "value": 1,
+                "valueType": "additive"
+            },
+            {
+                "description": "Cross mountain hexside",
+                "value": 2,
+                "valueType": "additive"
+            }
+        ]
+    },
+    {
+        "unit": "MagicalUnit",
+        "cost": [
+            {
+                "description": "Exit the first Color hex unaccompanied by a same-color Sorcerer",
+                "value": -1,
+                "valueType": "base"
+            },
+            {
+                "description": "Exit a Gray hex unaccompanied by a same-color Sorcerer",
+                "value": 1,
+                "valueType": "base"
+            },
+            {
+                "description": "Exit as the first hex a White hex unaccompanied by a same-color Sorcerer",
+                "value": 6,
+                "valueType": "base"
+            },
+            {
+                "description": "Demonic infantry crossing river hexside",
+                "value": 1,
+                "valueType": "additive"
+            },
+            {
+                "description": "Demonic infantry or troll crossing mountain hexside",
+                "value": 2,
+                "valueType": "additive"
+            },
+            {
+                "description": "Full-strength air dragon crossing river or mountain hexside",
+                "value": 0,
+                "valueType": "additive"
+            },
+            {
+                "description": "Troll crossing river hexside",
+                "value": 0,
+                "valueType": "additive"
+            },
+            {
+                "description": "Exit any hex accompanied by a same-color Sorcerer",
+                "value": 1,
+                "valueType": "base"
+            }
+        ]
+    }
+]

@@ -4,9 +4,10 @@ This documentation accompanies the Sorcerer TypeScript prototype. The game
 rules and reference scans are collected in [`rules/`](./rules/), while board
 data and implementation notes are documented in [Board data](./board-data.md).
 
-The interactive prototype currently renders the complete board and the Color
-Value Chart. Game phases and rules such as movement, combat, and attrition are
-not yet implemented.
+The interactive prototype renders the complete board, the Color Value Chart,
+and a two-player sequence-of-play tracker. The tracker advances through the
+rules-defined game-turn phases; it does not yet execute movement, combat, or
+attrition actions.
 
 ## Project references
 

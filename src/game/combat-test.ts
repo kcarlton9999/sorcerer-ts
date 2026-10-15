@@ -81,7 +81,7 @@ function render(): void {
   app!.innerHTML = `
     <main class="combat-page">
       <header class="combat-header">
-        <a class="combat-back" href="/">← Back to the board</a>
+        <a class="combat-back" href="/">Back to the Game Board</a>
         <p class="combat-kicker">SORCERER · TEST BENCH 01</p>
         <h1>Combat <span>Results</span></h1>
         <p class="combat-intro">Set up a matchup, choose a CRT line and differential, then roll the die.</p>

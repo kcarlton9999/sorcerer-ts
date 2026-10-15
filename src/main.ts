@@ -16,6 +16,13 @@ import {
   type MapCell,
   type TerrainType,
 } from "./game/map";
+import {
+  advanceSequence,
+  getInitialSequenceState,
+  getSequenceStepStatus,
+  SEQUENCE_STEPS,
+  type SequenceState,
+} from "./game/sequence";
 
 const boardData = parseMapData(parse(boardYaml));
 const terrainDiagnostics = auditTerrainEdges(boardData);
@@ -199,6 +206,78 @@ const edgeWarningMarkup =
       </details>`
     : "";
 
+let sequenceState = getInitialSequenceState();
+
+function getSequenceStep(state: SequenceState) {
+  const step = SEQUENCE_STEPS[state.stepIndex];
+  if (!step) {
+    throw new Error(`Unknown sequence step index: ${state.stepIndex}`);
+  }
+  return step;
+}
+
+function getSequencePhaseName(phase: string): string {
+  switch (phase) {
+    case "A":
+      return "First Player";
+    case "B":
+    case "E":
+      return "Joint Attrition";
+    case "C":
+    case "F":
+      return "Joint Combat";
+    case "D":
+      return "Second Player";
+    case "G":
+      return "Game-Turn Interphase";
+    default:
+      throw new Error(`Unknown sequence phase: ${phase}`);
+  }
+}
+
+function renderSequenceSteps(state: SequenceState): string {
+  return SEQUENCE_STEPS.map((step, index) => {
+    const status = getSequenceStepStatus(index, state.stepIndex);
+    const gridRow =
+      step.lane === "joint" ? "1 / 3" : step.lane === "player1" ? "1" : "2";
+    const currentAttribute = status === "current" ? 'aria-current="step"' : "";
+    const vortexRoller = step.vortexRoller
+      ? `<span class="sequence-roller">Current Player rolls · ${step.vortexRoller === "player1" ? "Player 1" : "Player 2"}</span>`
+      : "";
+    return `<article class="sequence-step sequence-step--${status} sequence-step--${step.lane}" data-sequence-step="${index}" data-lane="${step.lane}" data-status="${status}" style="grid-column: ${index + 2}; grid-row: ${gridRow}" ${currentAttribute}>
+      <span class="sequence-phase">Phase ${step.phase} · ${getSequencePhaseName(step.phase)}</span>
+      <strong>${step.name}</strong>
+      ${vortexRoller}
+      <span class="sequence-step-status">${status === "current" ? "In progress" : status === "complete" ? "Complete" : "Upcoming"}</span>
+    </article>`;
+  }).join("");
+}
+
+function renderSequenceTracker(state: SequenceState): string {
+  const currentStep = getSequenceStep(state);
+  return `<section class="sequence-card" aria-labelledby="sequence-title">
+    <header class="sequence-header">
+      <div>
+        <p class="eyebrow">Game-turn sequence</p>
+        <h2 id="sequence-title">Two-player phase tracker</h2>
+        <p class="sequence-current" aria-live="polite">
+          <strong>Game-Turn <span data-sequence-turn>${state.gameTurn}</span></strong>
+          <span data-sequence-current>Phase ${currentStep.phase} · ${getSequencePhaseName(currentStep.phase)} — ${currentStep.name} · In progress</span>
+        </p>
+      </div>
+      <button class="sequence-advance" type="button" data-sequence-advance>Advance phase</button>
+    </header>
+    <div class="sequence-scroll">
+      <div class="sequence-track" role="group" aria-label="Two-player game-turn ${state.gameTurn} sequence">
+        <span class="sequence-lane sequence-lane--player1" style="grid-column: 1; grid-row: 1">Player 1</span>
+        <span class="sequence-lane sequence-lane--player2" style="grid-column: 1; grid-row: 2">Player 2</span>
+        ${renderSequenceSteps(state)}
+      </div>
+    </div>
+    <p class="sequence-note">Tracker only: advancing marks the sequence and does not perform game actions.</p>
+  </section>`;
+}
+
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <main class="game-shell">
     <header class="game-header">
@@ -207,6 +286,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
         <h1>The Sorcerer Board</h1>
         <p class="subtitle">The complete 23-column map, rendered from its canonical hex data.</p>
         <a class="chart-link" href="/color-value-chart.html">Open the Color Value Chart</a>
+        <span class="chart-link-separator" aria-hidden="true">|</span>
         <a class="chart-link" href="/combat-test.html">Open the Combat Test Bench</a>
       </div>
       <div class="phase-card">
@@ -241,10 +321,11 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
           <button type="button" data-zoom="in" aria-label="Zoom map in">+</button>
           <button type="button" data-zoom="reset">Reset</button>
         </div>
+        ${renderSequenceTracker(sequenceState)}
       </div>
       <aside class="legend-card">
         <p class="eyebrow">Board key</p>
-        <h2>Magic colors</h2>
+        <h2>Hexes of Color</h2>
         <p class="legend-copy">Hex fill shows its magic color. Terrain marks follow the directional edge attributes in the source data.</p>
         <div class="legend">
           ${Object.keys(MAGIC_COLOR_HEX)
@@ -275,6 +356,39 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </main>
   <div id="city-tooltip" class="city-tooltip" role="tooltip" hidden></div>
 `;
+
+const sequenceCard = document.querySelector<HTMLElement>(".sequence-card");
+const sequenceTurn = document.querySelector<HTMLElement>(
+  "[data-sequence-turn]",
+);
+const sequenceCurrent = document.querySelector<HTMLElement>(
+  "[data-sequence-current]",
+);
+const sequenceTrack = document.querySelector<HTMLElement>(".sequence-track");
+const sequenceAdvanceButton = document.querySelector<HTMLButtonElement>(
+  "[data-sequence-advance]",
+);
+if (
+  !sequenceCard ||
+  !sequenceTurn ||
+  !sequenceCurrent ||
+  !sequenceTrack ||
+  !sequenceAdvanceButton
+) {
+  throw new Error("Game-turn sequence UI is missing from the page");
+}
+
+sequenceAdvanceButton.addEventListener("click", () => {
+  sequenceState = advanceSequence(sequenceState);
+  const currentStep = getSequenceStep(sequenceState);
+  sequenceTurn.textContent = String(sequenceState.gameTurn);
+  sequenceCurrent.textContent = `Phase ${currentStep.phase} · ${getSequencePhaseName(currentStep.phase)} — ${currentStep.name} · In progress`;
+  sequenceTrack.setAttribute(
+    "aria-label",
+    `Two-player game-turn ${sequenceState.gameTurn} sequence`,
+  );
+  sequenceTrack.innerHTML = renderSequenceSteps(sequenceState);
+});
 
 const boardWrap = document.querySelector<HTMLElement>(".board-wrap");
 const cityTooltip = document.querySelector<HTMLDivElement>("#city-tooltip");
